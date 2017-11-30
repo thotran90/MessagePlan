@@ -23,7 +23,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import thotran.android.messageplan.database.AppDatabase;
+import thotran.android.messageplan.fragment.HistoryFragment;
+import thotran.android.messageplan.fragment.InformationFragment;
 import thotran.android.messageplan.fragment.MessageFragment;
+import thotran.android.messageplan.fragment.TemplateFragment;
 import thotran.android.messageplan.utils.DatabaseInitializer;
 
 public class MainActivity extends Activity {
@@ -129,6 +132,15 @@ public class MainActivity extends Activity {
         switch (position){
             case 0:
                 fragment = new MessageFragment();
+                break;
+            case 1:
+                fragment = new TemplateFragment();
+                break;
+            case 2:
+                fragment = new HistoryFragment();
+                break;
+            case 3:
+                fragment = new InformationFragment();
                 break;
             default:
                 fragment = new MessageFragment();
