@@ -19,10 +19,6 @@ import thotran.android.messageplan.entities.Message;
  */
 
 public class MessageAdapter extends ArrayAdapter {
-    public MessageAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
-    }
-
     public MessageAdapter(Context context, int resource, List<Message> items) {
         super(context, resource, items);
     }
