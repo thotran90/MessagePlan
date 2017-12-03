@@ -21,7 +21,7 @@ public interface TemplateDao {
     Template findByName(String title);
 
     @Query("SELECT COUNT(*) from templates")
-    int countUsers();
+    int countTemplates();
 
     @Insert
     void insertAll(Template... templates);

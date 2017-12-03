@@ -26,10 +26,10 @@ public class DatabaseInitializer {
         populateWithTestData(db);
     }
 
-    private static Message addMessage(final AppDatabase db, Message msg) {
-        db.messageDao().insertAll(msg);
-        return msg;
-    }
+//    private static Message addMessage(final AppDatabase db, Message msg) {
+//        db.messageDao().insertAll(msg);
+//        return msg;
+//    }
 
     private static void populateWithTestData(AppDatabase db) {
         Message msg = new Message();
@@ -37,7 +37,7 @@ public class DatabaseInitializer {
         msg.setTitle("Huy Vip 2K FShare");
         msg.setBody("Huy FSN");
         msg.setTo("1055");
-        addMessage(db, msg);
+//        addMessage(db, msg);
 
         List<Message> userList = db.messageDao().getAll();
         Log.d(DatabaseInitializer.TAG, "Rows Count: " + userList.size());

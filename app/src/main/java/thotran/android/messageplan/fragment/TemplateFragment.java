@@ -14,6 +14,7 @@ import java.util.List;
 
 import thotran.android.messageplan.activity.R;
 import thotran.android.messageplan.adapter.TemplateAdapter;
+import thotran.android.messageplan.database.AppDatabase;
 import thotran.android.messageplan.entities.Template;
 
 /**
@@ -34,15 +35,24 @@ public class TemplateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_template, container, false);
+        getActivity().setTitle("Templates");
 
-        btnNewTemlate = (Button)rootView.findViewById(R.id.btnNewTemplate);
-        btnNewTemlate.setOnClickListener(view -> RedirectNewTemplate());
-
+        initComponent(rootView);
         return rootView;
     }
 
+    private void initComponent(View v){
+        btnNewTemlate = (Button)v.findViewById(R.id.btnNewTemplate);
+        btnNewTemlate.setOnClickListener(view -> RedirectNewTemplate());
+
+        mListTemplate = (ListView)v.findViewById(R.id.listTemplate);
+        Templates = AppDatabase.getAppDatabase(getActivity().getBaseContext()).templateDao().getAll();
+        mAdapter = new TemplateAdapter(getActivity(),R.layout.item_template,Templates);
+        mListTemplate.setAdapter(mAdapter);
+    }
+
     private void RedirectNewTemplate(){
-        Fragment newTemplate = NewTemplateFragment.newInstance("text","test");
+        Fragment newTemplate = NewTemplateFragment.newInstance();
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, newTemplate).commit();
 

@@ -19,8 +19,8 @@ import thotran.android.messageplan.entities.Template;
  */
 
 public class TemplateAdapter extends ArrayAdapter {
-    public TemplateAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List objects) {
-        super(context, resource, textViewResourceId, objects);
+    public TemplateAdapter(@NonNull Context context, int resource, @NonNull List objects) {
+        super(context, resource, objects);
     }
 
     @NonNull

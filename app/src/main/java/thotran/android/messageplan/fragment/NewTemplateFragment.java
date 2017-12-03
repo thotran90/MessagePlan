@@ -1,5 +1,6 @@
 package thotran.android.messageplan.fragment;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,93 +8,84 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import thotran.android.messageplan.activity.R;
+import thotran.android.messageplan.database.AppDatabase;
+import thotran.android.messageplan.entities.Template;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NewTemplateFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NewTemplateFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NewTemplateFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    EditText txtTitle, txtSendTo, txtBody;
+    Button btnSubmit;
 
     public NewTemplateFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NewTemplateFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NewTemplateFragment newInstance(String param1, String param2) {
+    public static NewTemplateFragment newInstance() {
         NewTemplateFragment fragment = new NewTemplateFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_template, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_new_template, container, false);
+
+        initComponent(rootView);
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private void initComponent(View v){
+        txtTitle = (EditText) v.findViewById(R.id.txtTitle);
+        txtSendTo = (EditText)v.findViewById(R.id.txtSendTo);
+        txtBody = (EditText)v.findViewById(R.id.txtBody);
+        btnSubmit = (Button)v.findViewById(R.id.btnSubmitTemplate);
+        btnSubmit.setOnClickListener(view -> doSubmitTemplate());
+    }
+
+    private void doSubmitTemplate(){
+        Template template = new Template();
+        template.setTitle(txtTitle.getText().toString());
+        template.setBody(txtBody.getText().toString());
+        template.setSendTo(txtSendTo.getText().toString());
+        boolean isValid = validateTemplate(template);
+        if(isValid){
+            AppDatabase.getAppDatabase(getActivity().getBaseContext()).templateDao().insertAll(template);
+            redirectToTemplate();
+            Toast.makeText(getActivity(),"Saved template",Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(getActivity(),"Fill all of required fields before submit.",Toast.LENGTH_LONG).show();
         }
     }
 
+    private boolean validateTemplate(Template template){
+        if(template.getTitle().isEmpty() || template.getBody().isEmpty())
+            return false;
+        return true;
+    }
+
+    private void redirectToTemplate(){
+        Fragment template = new TemplateFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, template).commit();
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

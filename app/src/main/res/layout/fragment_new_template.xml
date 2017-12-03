@@ -16,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtTitle"
+        android:inputType="textAutoCorrect"
+        android:lines="1"
         android:hint="Template title"
         android:layout_marginTop="10dp"/>
     <TextView
@@ -30,5 +32,28 @@
         android:hint="Send To"
         android:layout_marginTop="10dp"
         android:inputType="number"/>
-
+    <TextView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic|bold"
+        android:text="Body"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtBody"
+        android:layout_marginTop="10dp"
+        android:hint="Message body"
+        android:gravity="top|left"
+        android:lines="3"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSubmitTemplate"
+            android:text="Save"/>
+    </LinearLayout>
 </LinearLayout>

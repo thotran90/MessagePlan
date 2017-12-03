@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
  */
 @Entity(tableName="templates")
 public class Template {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int Id;
     @ColumnInfo(name = "title")
     private String Title;

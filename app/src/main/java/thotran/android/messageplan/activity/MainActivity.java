@@ -112,7 +112,7 @@ public class MainActivity extends Activity {
         switch(item.getItemId()) {
             case R.id.action_websearch:
                 // create intent to perform web search for this planet
-                DatabaseInitializer.populateAsync(AppDatabase.getAppDatabase(getBaseContext()));
+                //DatabaseInitializer.populateAsync(AppDatabase.getAppDatabase(getBaseContext()));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
