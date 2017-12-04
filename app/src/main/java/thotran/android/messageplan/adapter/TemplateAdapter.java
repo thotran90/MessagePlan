@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,30 +19,44 @@ import thotran.android.messageplan.entities.Template;
  * Created by thotran on 12/2/17.
  */
 
-public class TemplateAdapter extends ArrayAdapter {
-    public TemplateAdapter(@NonNull Context context, int resource, @NonNull List objects) {
-        super(context, resource, objects);
+public class TemplateAdapter extends BaseAdapter {
+    private Context context; //context
+    List<Template> Templates;
+
+    public TemplateAdapter(Context context, List<Template> templates) {
+        this.context = context;
+        Templates = templates;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View v = convertView;
-        if (v == null) {
-            LayoutInflater vi;
-            vi = LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.item_template, null);
+    public int getCount() {
+        return Templates.size();
+    }
+
+    @Override
+    public Template getItem(int i) {
+        return Templates.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return Templates.get(i).getId();
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        if(view == null){
+            view = LayoutInflater.from(context)
+                    .inflate(R.layout.item_template,viewGroup,false);
         }
-        TextView txtTitle, txtSendTo, txtBody;
-        txtTitle = (TextView)v.findViewById(R.id.txtTitle);
-        txtSendTo = (TextView)v.findViewById(R.id.txtSendTo);
-        txtBody = (TextView)v.findViewById(R.id.txtBody);
-        Template item = (Template)getItem(position);
-        if(item != null){
-            txtTitle.setText(item.getTitle());
-            txtBody.setText(item.getBody());
-            txtSendTo.setText(item.getSendTo());
-        }
-        return v;
+        Template currentTemplate = (Template)getItem(i);
+        TextView txtSendTo, txtTitle, txtBody;
+        txtSendTo = (TextView)view.findViewById(R.id.txtSendTo);
+        txtSendTo.setText(currentTemplate.getSendTo());
+        txtTitle = (TextView)view.findViewById(R.id.txtTitle);
+        txtTitle.setText(currentTemplate.getTitle());
+        txtBody = (TextView)view.findViewById(R.id.txtBody);
+        txtBody.setText(currentTemplate.getBody());
+        return view;
     }
 }
