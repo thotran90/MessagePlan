@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,42 +19,39 @@ import thotran.android.messageplan.entities.Message;
  * Created by thotran on 11/29/17.
  */
 
-public class MessageAdapter extends ArrayAdapter {
-    public MessageAdapter(Context context, int resource, List<Message> items) {
-        super(context, resource, items);
+public class MessageAdapter extends BaseAdapter {
+
+    private Context context;
+    private List<Message> lMessages;
+
+    public MessageAdapter(Context context, List<Message> lMessages) {
+        this.context = context;
+        this.lMessages = lMessages;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View v = convertView;
+    public int getCount() {
+        return lMessages.size();
+    }
 
-        if (v == null) {
-            LayoutInflater vi;
-            vi = LayoutInflater.from(getContext());
-            v = vi.inflate(R.layout.item_message, null);
+    @Override
+    public Message getItem(int i) {
+        return lMessages.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return lMessages.get(i).getId();
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        if(view == null){
+            view = LayoutInflater.from(context).inflate(R.layout.item_message,viewGroup,false);
         }
 
-        Message p = (Message) getItem(position);
+        TextView txtSendTo, txtContent, txtSentTime, txtTitle, txtRepeat;
 
-        if (p != null) {
-            TextView tt1 = (TextView) v.findViewById(R.id.txtTitle);
-            TextView tt2 = (TextView) v.findViewById(R.id.txtReceiver);
-            TextView tt3 = (TextView) v.findViewById(R.id.txtContent);
-
-            if (tt1 != null) {
-                tt1.setText(p.getTitle());
-            }
-
-            if (tt2 != null) {
-                tt2.setText(p.getTo());
-            }
-
-            if (tt3 != null) {
-                tt3.setText(p.getBody());
-            }
-        }
-
-        return v;
+        return view;
     }
 }

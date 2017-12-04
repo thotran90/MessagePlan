@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+
 import java.util.List;
 
 import thotran.android.messageplan.activity.R;
@@ -21,7 +23,7 @@ import thotran.android.messageplan.entities.Message;
 
 public class MessageFragment extends Fragment {
 
-    ListView mListView;
+    SwipeMenuListView mListView;
     MessageAdapter messageAdapter;
     List<Message> mData;
 
@@ -34,10 +36,14 @@ public class MessageFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_message, container, false);
 
         //Init component
-        mListView = (ListView)rootView.findViewById(R.id.listMessages);
+        initComponent(rootView);
+        return rootView;
+    }
+
+    private void initComponent(View v){
+        mListView = (SwipeMenuListView)v.findViewById(R.id.listMessages);
         mData = AppDatabase.getAppDatabase(getActivity().getBaseContext()).messageDao().getAll();
         messageAdapter = new MessageAdapter(getActivity(),R.layout.item_message,mData);
         mListView.setAdapter(messageAdapter);
-        return rootView;
     }
 }
