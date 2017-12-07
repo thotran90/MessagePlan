@@ -7,19 +7,37 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import thotran.android.messageplan.activity.R;
+import thotran.android.messageplan.adapter.WeekAdapter;
+import thotran.android.messageplan.utils.Helper;
 
 public class NewMessageFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_TITLE = "Title";
     private static final String ARG_BODY = "Body";
     private static final String ARG_SENDTO = "SendTo";
-    // TODO: Rename and change types of parameters
+    // Initial parameter
     private String mTitle;
     private String mBody;
     private String mSendTo;
+    // UI Component
+    EditText txtTitle, txtSendTo, txtBody, txtSchedule, txtEndDate;
+    Button btnSchedule, btnEndDate, btnSubmit;
+    CheckBox chkIsRepeat;
+    RadioButton radDaily, radWeekly, radMonthly, radYearly;
+    GridView areaWeekly, areaMonthly;
+    WeekAdapter weekAdapter;
+    // Variable
+    String[] mDay;
 
     public NewMessageFragment() {
         // Required empty public constructor
@@ -49,8 +67,31 @@ public class NewMessageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_newmessage, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_newmessage, container, false);
+        // Update titles
+        getActivity().setTitle("Add new message");
+        initComponent(rootView);
+        return rootView;
+    }
+
+    private void initComponent(View rootView) {
+        txtTitle = (EditText)rootView.findViewById(R.id.txtTitle);
+        if(!mTitle.isEmpty())
+            txtTitle.setText(mTitle);
+        txtSendTo = (EditText)rootView.findViewById(R.id.txtSendTo);
+        if(!mSendTo.isEmpty())
+            txtSendTo.setText(mSendTo);
+        txtBody = (EditText)rootView.findViewById(R.id.txtBody);
+        if(!mBody.isEmpty())
+            txtBody.setText(mBody);
+        initWeeklyPicker(rootView);
+    }
+
+    private void initWeeklyPicker(View rootView) {
+        areaWeekly = (GridView) rootView.findViewById(R.id.grdWeekly);
+        mDay = getActivity().getResources().getStringArray(R.array.day_array);
+        weekAdapter = new WeekAdapter(getActivity().getBaseContext(),mDay);
+        areaWeekly.setAdapter(weekAdapter);
     }
 
     @Override

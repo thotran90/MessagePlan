@@ -54,7 +54,7 @@ public class TemplateFragment extends Fragment {
         btnNewTemlate = (Button)v.findViewById(R.id.btnNewTemplate);
         btnNewTemlate.setOnClickListener(view -> RedirectNewTemplate());
 
-        mListView = (SwipeMenuListView) v.findViewById(R.id.listTemplate);
+        mListView = (SwipeMenuListView) v.findViewById(R.id.listTemplates);
         mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
         Templates = AppDatabase.getAppDatabase(getActivity().getBaseContext()).templateDao().getAll();
         mAdapter = new TemplateAdapter(getActivity(),Templates);
@@ -91,7 +91,13 @@ public class TemplateFragment extends Fragment {
 
                 switch (index) {
                     case 0:
-                        Toast.makeText(getActivity().getBaseContext(),"Like button press", Toast.LENGTH_SHORT).show();
+                        Template template = mAdapter.getItem(position);
+                        if(template != null){
+                            Fragment newMessage = NewMessageFragment.newInstance(template.getTitle(), template.getBody(),template.getSendTo());
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.content_frame, newMessage).commit();
+
+                        }
                         break;
                     case 1:
                         removeTemplate(position);

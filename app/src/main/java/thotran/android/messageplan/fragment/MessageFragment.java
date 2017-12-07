@@ -1,11 +1,13 @@
 package thotran.android.messageplan.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
@@ -26,6 +28,7 @@ public class MessageFragment extends Fragment {
     SwipeMenuListView mListView;
     MessageAdapter messageAdapter;
     List<Message> mData;
+    Button btnNewMessage;
 
     public MessageFragment() {
     }
@@ -41,9 +44,21 @@ public class MessageFragment extends Fragment {
     }
 
     private void initComponent(View v){
-        mListView = (SwipeMenuListView)v.findViewById(R.id.listMessages);
+        btnNewMessage = (Button)v.findViewById(R.id.btnnewMessage);
+        btnNewMessage.setOnClickListener(view -> redirectNewMessage());
+
+        mListView = (SwipeMenuListView)v.findViewById(R.id.listMessage);
         mData = AppDatabase.getAppDatabase(getActivity().getBaseContext()).messageDao().getAll();
-        messageAdapter = new MessageAdapter(getActivity(),R.layout.item_message,mData);
+        messageAdapter = new MessageAdapter(getActivity(),mData);
         mListView.setAdapter(messageAdapter);
+    }
+
+    private void redirectNewMessage(){
+        Fragment newMessage = NewMessageFragment.newInstance("","","");
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, newMessage).commit();
+
+        getActivity().setTitle("Add new message");
     }
 }

@@ -58,7 +58,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:id="@+id/btnShowTimePicker"
-            android:src="@drawable/ic_action_discard"/>
+            android:src="@drawable/ic_timepicker"/>
     </LinearLayout>
     <CheckBox
         android:layout_width="match_parent"
@@ -95,5 +95,43 @@
                 android:layout_weight="1"
                 android:text="Yearly" />
         </RadioGroup>
+    </LinearLayout>
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="auto_fit"
+        android:columnWidth="90dp"
+        android:id="@+id/grdWeekly"></GridView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/areaMonthly"
+        android:orientation="vertical"></LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/areaEndDate"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:text="End Date:"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:enabled="false"
+                android:id="@+id/txtEndDate"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_timepicker"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
