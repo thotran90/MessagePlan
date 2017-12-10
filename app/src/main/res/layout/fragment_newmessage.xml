@@ -61,7 +61,7 @@
             android:src="@drawable/ic_timepicker"/>
     </LinearLayout>
     <CheckBox
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Repeat"
         android:id="@+id/chkIsRepeat"/>
@@ -69,16 +69,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/areaRepeatable"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/radio_group_repeat">
             <RadioButton android:id="@+id/radio_daily"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Daily" />
+                android:text="Daily"
+                android:checked="true"/>
             <RadioButton android:id="@+id/radio_weekly"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -101,17 +104,43 @@
         android:layout_height="wrap_content"
         android:numColumns="auto_fit"
         android:columnWidth="90dp"
-        android:id="@+id/grdWeekly"></GridView>
+        android:id="@+id/grdWeekly"
+        android:visibility="gone"></GridView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/areaMonthly"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic"
+            android:text="Select repeat date"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:id="@+id/txtRepeatDateMonthly"
+                android:enabled="false"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_timepicker"
+                android:id="@+id/btnShowTimePickerMonthly"/>
+        </LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/areaEndDate"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,7 +160,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_timepicker"/>
+                android:src="@drawable/ic_timepicker"
+                android:id="@+id/btnShowTimePickerEndDate"/>
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSubmit"
+            android:text="Plan"/>
     </LinearLayout>
 </LinearLayout>

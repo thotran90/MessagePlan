@@ -9,7 +9,7 @@ import android.arch.persistence.room.PrimaryKey;
  */
 @Entity(tableName = "messages")
 public class Message {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int Id;
     @ColumnInfo(name = "title")
     private String Title;
@@ -19,6 +19,7 @@ public class Message {
     private String To;
     @ColumnInfo(name = "sending_time")
     private String SendingTime;
+
 
     public int getId() {
         return Id;
