@@ -26,11 +26,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
 import thotran.android.messageplan.activity.R;
 import thotran.android.messageplan.adapter.WeekAdapter;
+import thotran.android.messageplan.entities.Template;
 import thotran.android.messageplan.utils.Helper;
 
 public class NewMessageFragment extends Fragment {
@@ -51,11 +53,11 @@ public class NewMessageFragment extends Fragment {
     EditText txtTitle, txtSendTo, txtBody, txtSchedule, txtEndDate, txtDateMonthly;
     ImageButton btnShowDialogSchedule, btnShowDialogEndDate, btnShowDialogMonthly;
     Button btnSubmit;
-    CheckBox chkIsRepeat;
+    CheckBox chkIsRepeat, chkIsHasEndDate;
     RadioButton radDaily, radWeekly, radMonthly, radYearly;
     RadioGroup radGroupRepeat;
     GridView areaWeekly;
-    LinearLayout areaMonthly, areaEndDate, areaRepeatable;
+    LinearLayout areaMonthly, areaEndDate, areaRepeatable, inputEndDate;
     WeekAdapter weekAdapter;
     // Variable
     String[] mDay;
@@ -112,6 +114,8 @@ public class NewMessageFragment extends Fragment {
 
         chkIsRepeat = (CheckBox)rootView.findViewById(R.id.chkIsRepeat);
         chkIsRepeat.setOnCheckedChangeListener((buttonView, isChecked) -> onCheckedChangeIsRepeat(buttonView,isChecked));
+        chkIsHasEndDate = (CheckBox)rootView.findViewById(R.id.chkHasEndDate);
+        chkIsHasEndDate.setOnCheckedChangeListener((buttonView, isChecked) -> onCheckedChangeHasEndDate(isChecked));
 
         radDaily = (RadioButton)rootView.findViewById(R.id.radio_daily);
         radMonthly = (RadioButton)rootView.findViewById(R.id.radio_monthly);
@@ -124,6 +128,7 @@ public class NewMessageFragment extends Fragment {
         areaMonthly = (LinearLayout)rootView.findViewById(R.id.areaMonthly);
         areaEndDate = (LinearLayout)rootView.findViewById(R.id.areaEndDate);
         areaRepeatable = (LinearLayout)rootView.findViewById(R.id.areaRepeatable);
+        inputEndDate = (LinearLayout)rootView.findViewById(R.id.inputEndDate);
         //Button
         btnShowDialogSchedule = (ImageButton) rootView.findViewById(R.id.btnShowTimePicker);
         btnShowDialogSchedule.setOnClickListener(v -> showTimePickerSchedule());
@@ -158,7 +163,61 @@ public class NewMessageFragment extends Fragment {
     }
 
     private void doSubmit(){
+        boolean isValid = validateMessage();
+        if(isValid){
 
+        }
+    }
+
+    private boolean validateMessage(){
+        String title = txtTitle.getText().toString();
+        if(title.isEmpty()){
+            Toast.makeText(getActivity().getBaseContext(),"Input message title before submit.",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String content = txtBody.getText().toString();
+        if(content.isEmpty()){
+            Toast.makeText(getActivity().getBaseContext(),"Can not send empty message.",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String sendTo = txtSendTo.getText().toString();
+        if(sendTo.isEmpty()){
+            Toast.makeText(getActivity().getBaseContext(),"Input receiver number.",Toast.LENGTH_SHORT).show();
+            return  false;
+        }
+        boolean isRepeat = chkIsRepeat.isChecked();
+        if(isRepeat){
+            boolean isHasEndDate = chkIsHasEndDate.isChecked();
+            if(isHasEndDate){
+                String endDate = txtEndDate.getText().toString();
+                if(endDate.isEmpty()){
+                    Toast.makeText(getActivity().getBaseContext(),"Input end date before submit.", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                int selectedPlan = radGroupRepeat.getCheckedRadioButtonId();
+                switch (selectedPlan){
+                    case R.id.radio_daily:
+                        break;
+                    case R.id.radio_monthly:
+                        String monthlyDate = txtDateMonthly.getText().toString();
+                        if(monthlyDate.isEmpty()){
+                            Toast.makeText(getActivity().getBaseContext(),"Selected repeat date.",Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        break;
+                    case R.id.radio_yearly:
+                        String yearlyDate = txtDateMonthly.getText().toString();
+                        if(yearlyDate.isEmpty()){
+                            Toast.makeText(getActivity().getBaseContext(),"Select repeat date.",Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
+                        break;
+                    case R.id.radio_weekly:
+                        break;
+                }
+            }
+        }
+        return true;
     }
 
     private void onCheckedChangeIsRepeat(CompoundButton button, boolean isChecked){
@@ -169,6 +228,14 @@ public class NewMessageFragment extends Fragment {
             areaEndDate.setVisibility(View.GONE);
             areaRepeatable.setVisibility(View.GONE);
             resetRepeatArea();
+        }
+    }
+
+    private void onCheckedChangeHasEndDate(boolean isChecked){
+        if(isChecked){
+            inputEndDate.setVisibility(View.VISIBLE);
+        }else{
+            inputEndDate.setVisibility(View.GONE);
         }
     }
 
