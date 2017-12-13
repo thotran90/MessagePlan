@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 
 import thotran.android.messageplan.activity.R;
 import thotran.android.messageplan.adapter.WeekAdapter;
+import thotran.android.messageplan.database.AppDatabase;
 import thotran.android.messageplan.entities.Message;
 import thotran.android.messageplan.entities.Template;
 import thotran.android.messageplan.utils.Helper;
@@ -186,11 +188,29 @@ public class NewMessageFragment extends Fragment {
                         message.setIsRepeatDaily(String.valueOf(true));
                         break;
                     case R.id.radio_weekly:
-
+                        message.setIsRepeatWeekly(String.valueOf(true));
+                        message.setRepeatWeeklyValue(weekAdapter.selectedDay);
+                        break;
+                    case R.id.radio_monthly:
+                        message.setIsRepeatMonthly(String.valueOf(true));
+                        message.setRepeatMonthlyDate(txtDateMonthly.getText().toString());
+                        break;
+                    case R.id.radio_yearly:
+                        message.setIsRepeatYearly(String.valueOf(true));
+                        message.setRepeatYearlyDate(txtDateMonthly.getText().toString());
                         break;
                 }
             }
+            AppDatabase.getAppDatabase(getActivity().getBaseContext()).messageDao().insertAll(message);
+            Toast.makeText(getActivity().getBaseContext(),"Saved",Toast.LENGTH_SHORT).show();
+            redirectToMessageList();
         }
+    }
+
+    private void redirectToMessageList() {
+        Fragment message = new MessageFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, message).commit();
     }
 
     private boolean validateMessage(){
