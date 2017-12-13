@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -32,6 +33,7 @@ import java.util.Calendar;
 
 import thotran.android.messageplan.activity.R;
 import thotran.android.messageplan.adapter.WeekAdapter;
+import thotran.android.messageplan.entities.Message;
 import thotran.android.messageplan.entities.Template;
 import thotran.android.messageplan.utils.Helper;
 
@@ -61,7 +63,7 @@ public class NewMessageFragment extends Fragment {
     WeekAdapter weekAdapter;
     // Variable
     String[] mDay;
-
+    String mSelectedDay;
     public NewMessageFragment() {
         // Required empty public constructor
     }
@@ -165,7 +167,29 @@ public class NewMessageFragment extends Fragment {
     private void doSubmit(){
         boolean isValid = validateMessage();
         if(isValid){
+            Message message = new Message();
+            message.setTitle(txtTitle.getText().toString());
+            message.setBody(txtBody.getText().toString());
+            message.setTo(txtSendTo.getText().toString());
+            message.setSendingTime(txtSchedule.getText().toString());
+            boolean isRepeat = chkIsRepeat.isChecked();
+            message.setIsRepeat(String.valueOf(isRepeat));
+            if(isRepeat){
+                boolean isHasEndDate = chkIsHasEndDate.isChecked();
+                message.setIsHasEndDate(String.valueOf(isHasEndDate));
+                if(isHasEndDate){
+                    message.setEndDate(txtEndDate.getText().toString());
+                }
+                int repeatType = radGroupRepeat.getCheckedRadioButtonId();
+                switch (repeatType){
+                    case R.id.radio_daily:
+                        message.setIsRepeatDaily(String.valueOf(true));
+                        break;
+                    case R.id.radio_weekly:
 
+                        break;
+                }
+            }
         }
     }
 
@@ -213,6 +237,11 @@ public class NewMessageFragment extends Fragment {
                         }
                         break;
                     case R.id.radio_weekly:
+                        mSelectedDay = weekAdapter.selectedDay;
+                        if(mSelectedDay.isEmpty()){
+                            Toast.makeText(getActivity().getBaseContext(),"Select daty want to send message",Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
                         break;
                 }
             }

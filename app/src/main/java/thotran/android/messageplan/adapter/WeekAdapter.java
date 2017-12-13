@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import thotran.android.messageplan.activity.R;
 
@@ -17,6 +18,7 @@ public class WeekAdapter extends BaseAdapter {
 
     Context context;
     String[] mDays;
+    public static String selectedDay = "";
 
     public WeekAdapter(Context context, String[] mDays) {
         this.context = context;
@@ -49,7 +51,15 @@ public class WeekAdapter extends BaseAdapter {
         chkDay = (CheckBox)v.findViewById(R.id.chkDay);
         //chkDay.setId(position);
         chkDay.setText(getItem(position).toString());
-
+        chkDay.setOnCheckedChangeListener((buttonView, isChecked) -> onItemCheckedChange(buttonView,isChecked,position));
         return v;
+    }
+
+    private void onItemCheckedChange(CompoundButton v, boolean isChecked, int position){
+        if(isChecked){
+            selectedDay += String.valueOf(position) + ";";
+        }else{
+            selectedDay.replace(String.valueOf(position)+";","");
+        }
     }
 }
