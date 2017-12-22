@@ -176,6 +176,7 @@ public class NewMessageFragment extends Fragment {
             message.setSendingTime(txtSchedule.getText().toString());
             boolean isRepeat = chkIsRepeat.isChecked();
             message.setIsRepeat(String.valueOf(isRepeat));
+            String description = "";
             if(isRepeat){
                 boolean isHasEndDate = chkIsHasEndDate.isChecked();
                 message.setIsHasEndDate(String.valueOf(isHasEndDate));
@@ -186,21 +187,26 @@ public class NewMessageFragment extends Fragment {
                 switch (repeatType){
                     case R.id.radio_daily:
                         message.setIsRepeatDaily(String.valueOf(true));
+                        description = "Repeat daily at "+txtSchedule.getText().toString();
                         break;
                     case R.id.radio_weekly:
                         message.setIsRepeatWeekly(String.valueOf(true));
                         message.setRepeatWeeklyValue(weekAdapter.selectedDay);
+                        description = "Repeat weekly. Run at "+txtSchedule.getText().toString()+" in every "+weekAdapter.selectedDayString;
                         break;
                     case R.id.radio_monthly:
                         message.setIsRepeatMonthly(String.valueOf(true));
                         message.setRepeatMonthlyDate(txtDateMonthly.getText().toString());
+                        description = "Repeat monthly. Run at "+txtSchedule.getText().toString() + " in every "+txtDateMonthly.getText().toString();
                         break;
                     case R.id.radio_yearly:
                         message.setIsRepeatYearly(String.valueOf(true));
                         message.setRepeatYearlyDate(txtDateMonthly.getText().toString());
+                        description = "Repeat yearly. Run at "+txtSchedule.getText().toString() + " in every "+txtDateMonthly.getText().toString();
                         break;
                 }
             }
+            message.setDescription(description);
             AppDatabase.getAppDatabase(getActivity().getBaseContext()).messageDao().insertAll(message);
             Toast.makeText(getActivity().getBaseContext(),"Saved",Toast.LENGTH_SHORT).show();
             redirectToMessageList();

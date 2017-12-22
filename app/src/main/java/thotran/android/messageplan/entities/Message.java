@@ -39,6 +39,17 @@ public class Message {
     private String IsHasEndDate;
     @ColumnInfo(name = "end_date")
     private String EndDate;
+    @ColumnInfo(name="Description")
+    private String Description;
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
     public int getId() {
         return Id;
     }
@@ -158,4 +169,5 @@ public class Message {
     public void setEndDate(String endDate) {
         EndDate = endDate;
     }
+
 }

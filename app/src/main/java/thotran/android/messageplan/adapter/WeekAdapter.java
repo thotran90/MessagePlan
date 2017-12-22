@@ -19,6 +19,7 @@ public class WeekAdapter extends BaseAdapter {
     Context context;
     String[] mDays;
     public static String selectedDay = "";
+    public static String selectedDayString = "";
 
     public WeekAdapter(Context context, String[] mDays) {
         this.context = context;
@@ -58,8 +59,10 @@ public class WeekAdapter extends BaseAdapter {
     private void onItemCheckedChange(CompoundButton v, boolean isChecked, int position){
         if(isChecked){
             selectedDay += String.valueOf(position) + ";";
+            selectedDayString +=getItem(position).toString() + ";";
         }else{
             selectedDay.replace(String.valueOf(position)+";","");
+            selectedDayString.replace(getItem(position).toString() +";","");
         }
     }
 }

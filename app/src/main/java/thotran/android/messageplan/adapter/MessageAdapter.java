@@ -50,18 +50,20 @@ public class MessageAdapter extends BaseAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.item_message,viewGroup,false);
         }
 
-        TextView txtSendTo, txtContent, txtSentTime, txtTitle, txtRepeat;
+        TextView txtSendTo, txtContent, txtSentTime, txtTitle, txtDescription;
         txtSendTo = (TextView)view.findViewById(R.id.txtSendTo);
         txtSentTime = (TextView)view.findViewById(R.id.txtSentTime);
         txtTitle = (TextView)view.findViewById(R.id.txtTitle);
         txtContent = (TextView)view.findViewById(R.id.txtContent);
-        txtRepeat = (TextView)view.findViewById(R.id.txtSchedule);
+        txtDescription = (TextView)view.findViewById(R.id.txtDescription);
         Message item = getItem(i);
         if(item != null){
             txtSendTo.setText(item.getTo());
             txtContent.setText(item.getBody());
             txtTitle.setText(item.getTitle());
             txtSentTime.setText(item.getSendingTime());
+            txtDescription.setText(item.getDescription());
+
         }
         return view;
     }
